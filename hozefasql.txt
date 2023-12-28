@@ -1,0 +1,336 @@
+-- create table company.employee
+-- (
+-- ssn int,
+-- fname char(20),
+-- minit char(10),
+-- lname char(20),
+-- bdate date,
+-- address varchar(100),
+-- gender char(10),
+-- super_ssn int references company.employee(ssn) on update cascade on delete cascade,
+-- salary decimal(10,2),
+-- primary key(ssn));
+
+-- create table company.department
+-- (
+-- dnum int,
+-- dname char(50),
+-- mgr_ssn int references company.employee(ssn) on update cascade on delete cascade,
+-- mgr_stddat date,
+-- primary key(dnum));
+
+-- alter table company.employee
+-- add dnumber int references company.department(dnum) on update cascade on delete cascade;
+
+-- create table company.dept_loc
+-- (
+-- dno int references company.department(dnum) on update cascade on delete cascade,
+-- dloc char(50),
+-- primary key(dno,dloc));
+
+-- create table company.project
+-- (
+-- pname char(20),
+-- pnumber int,
+-- plocation varchar(50),
+-- primary key(pnumber),
+-- dnumb int references company.department(dnum) on update cascade on delete cascade);
+
+-- create table company.works_on
+-- (
+-- pno int references company.project(pnumber) on update cascade on delete cascade,
+-- essn int references company.employee(ssn) on update cascade on delete cascade,
+-- no_of_hours int,
+-- primary key(pno,essn));
+
+-- create table company.dependent
+-- (
+-- e_ssn int references company.employee(ssn) on update cascade on delete cascade,
+-- dep_name char(50),
+-- gender char(10),
+-- b_date date,
+-- relationship char(20),
+-- primary key(e_ssn,dep_name));
+
+-- insert into company.employee(ssn,fname,minit,lname,gender,address,salary)
+-- values(1001,'John','B','Smith','M','731 Fondren,Houston,TX',300000);
+
+-- insert into company.department
+-- values(5,'Research',1002,'1988-05-22')
+-- insert into company.department
+-- values(4,'Administration',1004,'1995-01-01');
+-- insert into company.department
+-- values(1,'Headquaters',1008,'1981-06-19')
+
+-- insert into company.dept_loc
+-- values(1,'Houston');
+-- insert into company.dept_loc
+-- values(4,'Stafford');
+-- insert into company.dept_loc
+-- values(5,'Bellaire');
+-- insert into company.dept_loc
+-- values(5,'Sugarland');
+-- insert into company.dept_loc
+-- values(5,'Houston');
+
+-- insert into company.project
+-- values('ProductX',1,'Bellaire',5);
+-- insert into company.project
+-- values('ProductY',2,'Sugarland',5);
+-- insert into company.project
+-- values('ProductZ',3,'Houston',5);
+-- insert into company.project
+-- values('Computerization',10,'Stafford',4);
+-- insert into company.project
+-- values('Reorganization',20,'Houston',1);
+-- insert into company.project
+-- values('Newbenefits',30,'Stafford',4);
+
+-- insert into company.works_on
+-- values(1,1001,32)
+-- insert into company.works_on
+-- values(2,1001,7);
+-- insert into company.works_on
+-- values(3,1005,40)
+-- insert into company.works_on
+-- values(1,1006,20)
+-- insert into company.works_on
+-- values(2,1006,20)
+-- insert into company.works_on
+-- values(2,1002,10)
+-- insert into company.works_on
+-- values(3,1002,10)
+-- insert into company.works_on
+-- values(10,1002,10)
+-- insert into company.works_on
+-- values(20,1002,10)
+-- insert into company.works_on
+-- values(30,1003,30)
+-- insert into company.works_on
+-- values(10,1003,10)
+-- insert into company.works_on
+-- values(10,1007,35)
+-- insert into company.works_on
+-- values(30,1007,5)
+-- insert into company.works_on
+-- values(30,1004,20)
+-- insert into company.works_on
+-- values(20,1004,15)
+-- insert into company.works_on
+-- values(20,1008);
+
+-- insert into company.dependent
+-- values(1002,'Alice','F','1988-04-05','Daughter')
+-- insert into company.dependent
+-- values(1002,'Theodore','M','1983-10-25','Son')
+-- insert into company.dependent
+-- values(1002,'Joy','F','1958-05-03','Spouse')
+-- insert into company.dependent
+-- values(1004,'Abner','M','1942-02-28','Spouse')
+-- insert into company.dependent
+-- values(1001,'Michael','M','1988-01-04','Son')
+-- insert into company.dependent
+-- values(1001,'Alice','F','1988-12-30','Daughter')
+-- insert into company.dependent
+-- values(1001,'Elizabeth','F','1967-05-05','Spouse')
+
+-- select bdate,address from company.employee
+-- where fname='John' and minit='B' and lname='Smith';
+
+-- select fname,lname,address from company.employee,company.department
+-- where dnumber=dnum and dname='Research';
+
+-- select pnumber,dnumb,lname,address,bdate
+-- from company.employee,company.department,company.project
+-- where dnumb=dnum and plocation='Stafford' and mgr_ssn=ssn
+
+-- select a.fname,a.lname,b.fname,b.lname
+-- from company.employee as a,company.employee as b
+-- where a.super_ssn=b.ssn
+
+-- select all fname
+-- from company.employee
+
+-- select fname,dname
+-- from company.employee,company.department
+
+-- select * from company.employee
+-- where dnumber=5;
+
+-- select all salary from company.employee
+
+-- select distinct salary from company.employee
+
+-- select distinct pnumber
+-- from company.project,company.works_on,company.employee
+-- where pnumber=pno and essn=ssn and lname='Smith'
+-- union
+-- select distinct pnumber
+-- from company.project,company.department,company.employee
+-- where dnumb=dnum and mgr_ssn=ssn and lname='Smith';
+
+-- select fname,lname from company.employee
+-- where address like '%Houston,TX%';
+
+-- select 1.1*salary 
+-- from company.employee,company.project,company.works_on
+-- where essn=ssn and pname='ProductX' and pnumber=pno;
+
+-- select fname,lname
+-- from company.employee
+-- where (salary between 30000 and 40000) and dnumber=5;
+
+-- select fname,lname,pname,dname
+-- from company.employee,company.department,company.project,company.works_on
+-- where essn=ssn and pnumber=pno and dnumber=dnum
+-- order by dname,lname,fname;
+
+-- select fname,lname
+-- from company.employee,company.project,company.works_on
+-- where essn=ssn and pnumber=pno and pname='ProductX' and dnumber=5 and no_of_hours>10;
+
+-- select fname,minit,lname 
+-- from company.employee,company.dependent
+-- where e_ssn=ssn and fname=dep_name;
+
+-- select e.fname,e.lname
+-- from company.employee as e,company.employee as f
+-- where f.fname='Franklin' and f.lname='Wong' and f.ssn=e.super_ssn;
+
+-- select pname,sum(no_of_hours)
+-- from company.project,company.works_on
+-- where pnumber=pno
+-- group by pname;
+
+-- select fname,lname
+-- from company.employee
+-- where super_ssn is NULL;
+
+-- select distinct pnumber
+-- from company.project
+-- where pnumber in
+-- 		(select pno 
+-- 		from company.works_on,company.employee
+-- 		where essn=ssn and lname='Smith' )
+-- 		or
+-- 		pnumber in(select pnumber
+-- 				from company.project,company.department,company.employee
+-- 				where dnum=dnumb and ssn=mgr_ssn and lname='Smith');
+
+-- select e.fname,e.lname
+-- from company.employee as e
+-- where ssn in(select e_ssn
+-- 			from company.dependent 
+-- 			where e.ssn=e_ssn and e.gender=gender and e.fname=dep_name )
+
+-- select fname,lname
+-- from company.employee
+-- where not exists(select *
+-- 				from company.dependent
+-- 				where e_ssn=ssn);
+
+-- select fname,lname
+-- from company.employee
+-- where exists(select * 
+-- 			 from company.dependent
+-- 			where e_ssn=ssn)
+-- 			and
+-- 			exists(select * from
+-- 				  company.department
+-- 				  where mgr_ssn=ssn);
+
+-- select  distinct essn
+-- from company.works_on
+-- where pno in(1,2,3);
+
+-- select sum(salary),max(salary),min(salary),avg(salary)
+-- from company.employee;
+
+-- select sum(salary) as total,max(salary) as highest,min(salary) as lowest,avg(salary) as mean
+-- from company.employee;
+
+-- select sum(salary),max(salary),min(salary),avg(salary)
+-- from company.employee,company.department
+-- where dname='Research'and dnumber=dnum;
+
+-- select count(*)
+-- from company.employee;
+
+-- select count(*)
+-- from company.employee,company.department
+-- where dnumber=dnum and dname='Research';
+
+-- select count(distinct salary)
+-- from company.employee;
+
+-- select dnumber,count(*),avg(salary)
+-- from company.employee
+-- group by dnumber;
+
+-- select count(essn),pname,pnumber
+-- from company.project,company.works_on
+-- where pnumber=pno
+-- group by pnumber;
+
+-- select count(*),pnumber,pname
+-- from company.project,company.works_on
+-- where pnumber=pno
+-- group by pnumber,pname
+-- having count(*)>2;
+
+-- select pnumber,pname,count(*)
+-- from company.project,company.works_on
+-- where dnumb=5 and pnumber=pno
+-- group by pnumber,pname;
+
+-- select count(*),dnum
+-- from company.employee,company.department
+-- where dnumber=dnum and salary>40000 
+-- group by dnum
+-- having count(*)>5
+
+
+-- SELECT Dnumber, COUNT (*)
+-- FROM company.employee
+-- WHERE Salary>40000 AND Dnumber IN
+--  ( SELECT Dnumber
+--  FROM company.employee
+-- GROUP BY Dnumber
+--  HAVING COUNT (*) > 5)
+-- GROUP BY Dnumber
+
+-- update company.project
+-- set plocation='Bellaire',dnumb=5
+-- where pnumber=10;
+
+-- update company.employee
+-- set salary=salary*1.1
+-- where dnumber=5;
+
+-- delete from company.employee
+-- where lname='Brown';
+
+-- delete from company.employee
+-- where ssn=1001;
+
+-- delete from company.employee
+-- where dnumber=5;
+
+-- delete from company.employee
+
+-- alter table company.employee
+-- add column job varchar(20);
+
+-- alter table company.employee
+-- drop column address cascade;
+
+-- alter table company.department
+-- alter column mgr_ssn drop default;
+
+-- alter table company.department
+-- alter column mgr_ssn set default 1002;
+
+-- drop table company.dependent cascade;
+
+-- drop schema company cascade;
+
